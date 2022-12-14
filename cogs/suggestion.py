@@ -30,6 +30,7 @@ class Suggestion(commands.Cog):
 
 	@commands.command(name="suggest", description="suggestion form")
 	async def suggest(self, interaction: discord.Interaction):
+		print("got here")
 		await interaction.response.send_modal(suggestion_Modal)
 
 		# user = interaction.user
