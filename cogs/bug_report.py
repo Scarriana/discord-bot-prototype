@@ -29,17 +29,19 @@ class Bug_Report(commands.Cog):
 
 	@app_commands.command(name='bugreport', description='Enter a description of your bug. Game breaking or exploits bugs should be DM\'d to a moderator')
 	async def bugreport(self, interaction: discord.Interaction, 
-		choice: str, description: str, file: discord.Attachment):
+		label: str, description: str, file: discord.Attachment=None):
 
-		embed = discord.Embed(description=description)
-		# print("got hereeeee")
+		embed = discord.Embed(title = 'Bug Report', 
+			description= label + "\n" + description, 
+			color = discord.Color.purple())
+		# embed.set_author(name=interaction.user_url)
+		# print(interaction.user + "\n")
 		# report_embed = discord.Embed(title = 'Bug Report', 
 		# 	description = description, 
-		# 	timestamp= datetime.now(), 
 		# 	color = discord.Color.purple())
 
+		#embed.set_author(name=interaction.user, icon_url= interaction.user.avatar)
 
-		# report_embed.set_author(name=interaction.user, icon_url= interaction.user.avatar)
 		# print("about to send the embed")
 		await interaction.response.send_message(embed=embed)
 

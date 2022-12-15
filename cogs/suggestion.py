@@ -28,7 +28,7 @@ class Suggestion(commands.Cog):
 	async def on_ready(self):
 		print('Suggestion cog loaded.')
 
-	@commands.command(name="suggest", description="suggestion form")
+	@app_commands.command(name="suggest", description="suggestion form")
 	async def suggest(self, interaction: discord.Interaction):
 		print("got here")
 		await interaction.response.send_modal(suggestion_Modal)
