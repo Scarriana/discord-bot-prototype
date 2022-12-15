@@ -2,12 +2,10 @@
 #December 2022
 #Monumenta Discord Task Bot Prototype: bug report cog
 import discord
-#from discord import app_commands
 from discord.ext import commands
 from discord import ui, app_commands
-# from discord app_commands import Choice
-import datetime
 import config
+import traceback
 
 class Bug_Report(commands.Cog):
 
@@ -20,7 +18,7 @@ class Bug_Report(commands.Cog):
 	@commands.command()
 	async def sync_report(self, ctx) -> None:
 		fmt = await ctx.bot.tree.sync(guild=ctx.guild)
-		await ctx.send(f'Synced {len(fmt)} commands.')
+		await ctx.send(f'Synced {len(fmt)} commands in bug_report.py')
 	
 	#on ready
 	@commands.Cog.listener()
