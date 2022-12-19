@@ -9,26 +9,6 @@ import config
 import traceback
 
 
-class suggestion_Modal(discord.ui.Modal, title="Suggestion Form"):
-	# category = discord.ui.TextInput(label='Category', style=discord.TextStyle.short, placeholder='Label must be one of: misc plugin item class boss quest build mob cmd discord advancement delve server npc enchantment gui website', default='misc', required = True, max_length=11)
-	# response = discord.ui.TextInput(label='Suggestion', style=discord.TextStyle.paragraph,required = True, max_length=1800)
-	# async def on_submit(self, interaction: discord.Interaction):
-	# 	#embeded answer
-	# 	embed = discord.Embed(title = self.title, description = (f"**{self.category.label}**\n{self.category}\n" + f"**{self.response.label}**\n{self.response}"), timestamp= datetime.now(), color = discord.Color.blue())
-	# 	embed.set_author(name=interaction.user, icon_url= interaction.user.avatar)
-	# 	await interaction.response.send_message(embed=embed)
-
-	name=discord.ui.TextInput(
-		label='suggestion', placeholder='aaaaaaa')
-
-	feedback = discord.ui.TextInput(
-		label='please work',
-		placeholder = 'geedback here pls')
-
-	async def on_submit(self, interaction: discord.Interaction):
-		await interaction.response.send_message(f'Thanks for your feedback')
-
-
 
 class Suggestion(commands.Cog):
 
@@ -38,7 +18,8 @@ class Suggestion(commands.Cog):
 
 	@commands.command()
 	#sync bot: this is necessary, but also needs more than what I have now
-	async def sync_sug(self, ctx) -> None:
+	async def sync_suggestion(self, ctx) -> None:
+		await ctx.send('Syncing command recieved')
 		fmt = await ctx.bot.tree.sync(guild=ctx.guild)
 		await ctx.send(f'Synced {len(fmt)} commands in suggestion.py')
 	
@@ -47,13 +28,16 @@ class Suggestion(commands.Cog):
 		print('Suggestion cog loaded.')
 
 
-	@app_commands.command(name="suggestion", description="suggestion form")
-	async def suggestion(self, interaction: discord.Interaction):
-		await interaction.response.send_modal(suggestion_Modal())
+	@app_commands.command(name='suggestion', description='Enter a suggestion of how to improve the game. Bugs should be sent as a bug report.')
+	async def bugreport(self, interaction: discord.Interaction, 
+		label: str, description: str):
 
-		# user = interaction.user
-		# guild = interaction.guild
-		# channel = interaction.channel
+		embed = discord.Embed(title = 'Suggestion', 
+			description= label + "\n" + description, 
+			color = discord.Color.yellow())
+
+		# print("about to send the embed")
+		await interaction.response.send_message(embed=embed)
 
 
 		#setting up cog for the bot: will need to adjust for which discord servers get passed into guilds

@@ -3,3 +3,4 @@ config.py
 *.pyc
 launch.json
 *.py
+*.json
