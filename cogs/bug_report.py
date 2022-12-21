@@ -1,24 +1,21 @@
 #@Scarriana#5999
 #December 2022
 #Monumenta Discord Task Bot Prototype: bug report cog
-#contains the commands to make, edit, and remove bugs
-#along with the json handling to save these actions
-
 import discord
+#from discord import app_commands
 from discord.ext import commands
 from discord import ui, app_commands
+# from discord app_commands import Choice
+import datetime
 import config
-import traceback
 import os
+import traceback
 import json
 
-
-class Bug_Report(commands.Cog):
-
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+class Json_Handler():
+    def __init__(self):
         self._json_path = config.JSON_PATH_BUG
-
+        
     def save(self, entry, next_index, labels, complexities, priorities, notifications_disabled):
         savedata = {
             'entries': entry,
@@ -133,26 +130,30 @@ class Bug_Report(commands.Cog):
 
         return index, self._entries[index]
 
+
+
+
+class Bug_Report(commands.Cog):
+
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
+
+
     #sync bot: this is necessary, but also needs more than what I have now
     @commands.command()
     async def sync_report(self, ctx) -> None:
-        await ctx.send('Syncing command recieved')
         fmt = await ctx.bot.tree.sync(guild=ctx.guild)
-        await ctx.send(f'Synced {len(fmt)} commands in bug_report.py')
+        await ctx.send(f'Synced {len(fmt)} commands.')
     
     #on ready
     @commands.Cog.listener()
     async def on_ready(self):
-        self.load()
         print('Bug Report cog loaded.')
 
     @app_commands.command(name='bugreport', description='Enter a description of your bug. Game breaking or exploits bugs should be DM\'d to a moderator')
     async def bugreport(self, interaction: discord.Interaction, 
         label: str, description: str, file: discord.Attachment=None):
-
-
-
-
 
         embed = discord.Embed(title = 'Bug Report', 
             description= label + "\n" + description, 
@@ -160,55 +161,13 @@ class Bug_Report(commands.Cog):
         # embed.set_author(name=interaction.user_url)
         # print(interaction.user + "\n")
         # report_embed = discord.Embed(title = 'Bug Report', 
-        # 	description = description, 
-        # 	color = discord.Color.purple())
+        #   description = description, 
+        #   color = discord.Color.purple())
 
         #embed.set_author(name=interaction.user, icon_url= interaction.user.avatar)
 
         # print("about to send the embed")
         await interaction.response.send_message(embed=embed)
-
-
-    @app_commands.command(name='editbug', description='Enter a description of your bug. Game breaking or exploits bugs should be DM\'d to a moderator')
-    async def editbug(self, interaction: discord.Interaction, 
-        bugnumber: int, description: str):
-
-        embed = discord.Embed(title = 'Bug Report', 
-            description= description, 
-            color = discord.Color.purple())
-        # embed.set_author(name=interaction.user_url)
-        # print(interaction.user + "\n")
-        # report_embed = discord.Embed(title = 'Bug Report', 
-        # 	description = description, 
-        # 	color = discord.Color.purple())
-
-        #embed.set_author(name=interaction.user, icon_url= interaction.user.avatar)
-
-        # print("about to send the embed")
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name='removebug', description='Reject / Remove a bug (must have permissions or be the bug author)')
-    async def removebug(self, interaction: discord.Interaction, 
-        bugnumber: int, reason: str):
-
-        embed = discord.Embed(title = 'Bug Report', 
-            description= reason, 
-            color = discord.Color.green())
-        # embed.set_author(name=interaction.user_url)
-        # print(interaction.user + "\n")
-        # report_embed = discord.Embed(title = 'Bug Report', 
-        # 	description = description, 
-        # 	color = discord.Color.purple())
-
-        #embed.set_author(name=interaction.user, icon_url= interaction.user.avatar)
-
-        # print("about to send the embed")
-        await interaction.response.send_message(embed=embed)
-
-
-
-
-
 
 #setting up cog for the bot: will need to adjust for which discord servers get passed into guilds
 async def setup(bot):
