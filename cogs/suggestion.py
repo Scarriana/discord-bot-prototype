@@ -29,11 +29,32 @@ class Suggestion(commands.Cog):
 
 
 	@app_commands.command(name='suggestion', description='Enter a suggestion of how to improve the game. Bugs should be sent as a bug report.')
+	@app_commands.describe(label='labels to choose from:')
+	@app_commands.choices(label=[
+        discord.app_commands.Choice(name='misc', value=1),
+        discord.app_commands.Choice(name='advancement', value=2),
+        discord.app_commands.Choice(name='boss', value=3),
+        discord.app_commands.Choice(name='build', value=4),
+        discord.app_commands.Choice(name='class', value=5),
+        discord.app_commands.Choice(name='cmd', value=6),
+        discord.app_commands.Choice(name='delve', value=7),
+        discord.app_commands.Choice(name='depths', value=8),
+        discord.app_commands.Choice(name='discord', value=9),
+        discord.app_commands.Choice(name='enchantment', value=10),
+        discord.app_commands.Choice(name='gui', value=11),
+        discord.app_commands.Choice(name='item', value=12),
+        discord.app_commands.Choice(name='mob', value=13),
+        discord.app_commands.Choice(name='npc', value=14),
+        discord.app_commands.Choice(name='plugin', value=15),
+        discord.app_commands.Choice(name='quest', value=16),
+        discord.app_commands.Choice(name='server', value=17),
+        discord.app_commands.Choice(name='website', value=18),
+        ])
 	async def bugreport(self, interaction: discord.Interaction, 
-		label: str, description: str):
+		label: discord.app_commands.Choice[int], description: str):
 
 		embed = discord.Embed(title = 'Suggestion', 
-			description= label + "\n" + description, 
+			description= label.name + "\n" + description, 
 			color = discord.Color.yellow())
 
 		# print("about to send the embed")
