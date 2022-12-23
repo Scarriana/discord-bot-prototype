@@ -10,6 +10,10 @@ import config
 import asyncio
 import os
 import json
+import logging
+
+discord.utils.setup_logging()
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -36,15 +40,6 @@ print('made the bot')
 async def on_ready():
     print('Online.')
 
-@bot.event
-async def on_message(message):
-    await bot.process_commands(message)
-    if message[0] == '.':
-        print('.')
-        return
-    if message.author == bot.user:
-        return
-    await message.channel.send("got here")
 
 async def main():
     await bot.start(config.TOKEN)

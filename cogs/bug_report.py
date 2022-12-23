@@ -232,8 +232,9 @@ class Bug_Report(commands.Cog):
         bug_embed.set_author(name=interaction.user.display_name, icon_url= interaction.user.avatar)
         
         # next line breaks the code: have tried it with / without the if file != None (required it in async def bugreport)
-        # if file != None:
-        #     bug_embed.set_image(interaction.message.attachments[0].url)
+        if file != None:
+            print(file.url)
+            bug_embed.set_image(url=file.url)
 
         #need a way to save the file: should be interaction.message.attachments[0].url but for some reason this doesn't work
 
