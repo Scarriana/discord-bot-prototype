@@ -1,4 +1,3 @@
-#@Scarriana#5999
 #December 2022
 #Monumenta Discord Task Bot Prototype: bug report cog
 import discord
@@ -222,7 +221,7 @@ class Bug_Report(commands.Cog):
 
             ])
     async def bugreport(self, interaction: discord.Interaction, 
-        label: discord.app_commands.Choice[int], description: str, file: discord.Attachment=None, ):
+        label: discord.app_commands.Choice[int], description: str, file: discord.Attachment=None):
 
         #concerns: pinging users (labeling covered the slash command)
 
@@ -233,8 +232,10 @@ class Bug_Report(commands.Cog):
         bug_embed.set_author(name=interaction.user.display_name, icon_url= interaction.user.avatar)
         
         # next line breaks the code: have tried it with / without the if file != None (required it in async def bugreport)
-        if file != None:
-            bug_embed.set_image(interaction.message.attachments[0].url)
+        # if file != None:
+        #     bug_embed.set_image(interaction.message.attachments[0].url)
+
+        #need a way to save the file: should be interaction.message.attachments[0].url but for some reason this doesn't work
 
 
         #do some more checks, but then call add_entry(self, description, 
@@ -244,10 +245,11 @@ class Bug_Report(commands.Cog):
         # #and save it with save_entry(self, entry, next_index, labels, complexities, priorities, notifications_disabled):
         # json_handler.save_entry(entry=entry, next_index=index, labels=label.name, complexities="unknown", priorities="N/A", notifications_disabled=False)
 
+        #cannot send /save any file attachments though
+        #await interaction.response.send_message(file=file, embed=bug_embed)
+        await interaction.response.send_message(file=file, embed=bug_embed)
 
-        await interaction.response.send_message(embed=bug_embed)
-
-    @app_commands.command(name=assignComplexity, description="Assign the complexity of a bug")
+    @app_commands.command(name='assigncomplexity', description="Assign the complexity of a bug")
     @app_commands.describe(complexity='Complexity- if unknown, select unknown')
     @app_commands.choices(complexity=[
         discord.app_commands.Choice(name='easy', value=1),
@@ -255,16 +257,22 @@ class Bug_Report(commands.Cog):
         discord.app_commands.Choice(name='hard', value=3),
         discord.app_commands.Choice(name='unknown', value=4)
         ])
-    async def assignComplexity(self, interaction: discord.Interaction, 
-        bugNumber = int, complexity:discord.app_commands.Choice[int]):
+    async def assigncomplexity(self, interaction: discord.Interaction, bugnumber: int, complexity:discord.app_commands.Choice[int]):
+
 
         #get the bug, reassign the complexity, save it, send it
+
+        index, entry = json_handler.get_entry(bugNumber)
+        entry["priority"] = complexity.name
+
+        #TODO: save the bug
+
         bug_embed = discord.Embed(title = "temp", 
-            description= bugNumber, 
+            description= bugnumber, 
             color = discord.Color.pink())
         await interaction.response.send_message(embed=bug_embed)
 
-    @app_commands.command(name=assignPriority, description="Assign the priority of a bug")
+    @app_commands.command(name='assignpriority', description="Assign the priority of a bug")
     @app_commands.describe(priority='Priority- if unknown, select N/A')
     @app_commands.choices(priority=[
         discord.app_commands.Choice(name='Critical', value=1),
@@ -274,13 +282,13 @@ class Bug_Report(commands.Cog):
         discord.app_commands.Choice(name='Zero', value=4),
         discord.app_commands.Choice(name='N/A', value=5)
         ])
-    async def assignPriority(self, interaction: discord.Interaction, 
-        bugNumber = int, priority:discord.app_commands.Choice[int]):
+    async def assignpriority(self, interaction: discord.Interaction, bugnumber: int,  priority:discord.app_commands.Choice[int]):
 
         #get the bug, reassign the priority, save it, send it
-        index, entry = json_handler.get_entry(bugNumber)
+        index, entry = json_handler.get_entry(bugnumber)
         entry["priority"] = priotity.name
 
+        #TODO: save the bug
 
 
         bug_embed = discord.Embed(title = "temp", 

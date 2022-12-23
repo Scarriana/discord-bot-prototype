@@ -1,4 +1,3 @@
-#@Scarriana#5999
 #December 2022
 #Monumenta Discord Task Bot Prototype: suggestion cog
 
