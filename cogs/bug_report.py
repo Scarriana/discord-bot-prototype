@@ -247,7 +247,7 @@ class Bug_Report(commands.Cog):
 
         #cannot send /save any file attachments though
         #await interaction.response.send_message(file=file, embed=bug_embed)
-        await interaction.response.send_message(file=file, embed=bug_embed)
+        await interaction.response.send_message(embed=bug_embed)
 
     @app_commands.command(name='assigncomplexity', description="Assign the complexity of a bug")
     @app_commands.describe(complexity='Complexity- if unknown, select unknown')
